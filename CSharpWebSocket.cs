@@ -15,10 +15,10 @@ namespace CSharpWS2 {
         public event OnClientConnect OnClientConnectionEvent;
         public event OnServerStart OnServerStartEvent;
 
-        public IPAddress IPAddress { get; set; }
-        public int Port { get; set; }
-        public int Backlog { get; set; }
-        public int BufferSize { get; set; }
+        public IPAddress IPAddress { get; private set; }
+        public int Port { get; private set; }
+        public int Backlog { get; private set; }
+        public int BufferSize { get; private set; }
 
 
         private Listener ServerListener { get; set; }
