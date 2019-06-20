@@ -23,23 +23,20 @@ namespace CSharpWS2 {
         public void StartServer() {
             Socket.Bind(IPEndPoint);
             Socket.Listen(BackLog);
-            Socket.BeginAccept(new AsyncCallback(AcceptCallback), Socket);
+            Socket.BeginAccept(AcceptCallback, null);
             IsListening = true;
         }
 
         private void AcceptCallback(IAsyncResult asyncResult) {
             try {
                 Socket connectedSocket = Socket.EndAccept(asyncResult);
-                if (connectedSocket.Connected) {
-                    OnSocketConnectEventHandler(connectedSocket);
-                }
-                Socket.BeginAccept(AcceptCallback, Socket);
+                OnSocketConnectEventHandler(connectedSocket);
+                Socket.BeginAccept(AcceptCallback, null);
             } catch(Exception ex) {
-                Socket.Shutdown(SocketShutdown.Both);
                 Socket.Close();
                 Socket.Dispose();
                 IsListening = false;
-                throw ex;
+                Console.WriteLine(ex.Message);
             } 
         }
 

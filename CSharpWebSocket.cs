@@ -6,57 +6,50 @@ using Newtonsoft.Json;
 
 namespace CSharpWS2 {
     public class CSharpWebSocket {
-        public delegate void OnClientConnect(Client client);
+
+        public delegate void OnClientDisconnect(Client client);
+        public delegate void OnClientConnect(Client connect);
         public delegate void OnServerStart();
-        //public delegate void OnClientEvent(object sender, EventArgs e);
 
-        public event OnClientConnect OnClientConnectEventHandler;
-        public event OnServerStart OnServerStartEventHandler;
+        public event OnClientDisconnect OnClientDisconnectionEvent;
+        public event OnClientConnect OnClientConnectionEvent;
+        public event OnServerStart OnServerStartEvent;
 
-        public IPAddress IPAddress { get; private set; }
-        public int Port { get; private set; }
-        public int BackLog { get; private set; }
+        public IPAddress IPAddress { get; set; }
+        public int Port { get; set; }
+        public int Backlog { get; set; }
+        public int BufferSize { get; set; }
 
-        private Listener serverListener { get; set; }
+
+        private Listener ServerListener { get; set; }
         private IPEndPoint IPEndPoint { get; set; }
-        private Dictionary<Guid, Client> Sockets { get; set; }
-        //private Dictionary<string, > Events;
+        private Dictionary<Guid, Client> ConnectedSockets { get; set; }
 
-        public CSharpWebSocket(IPAddress ipAddress, int port, int backLog, int bufferSize) {
-            IPEndPoint = new IPEndPoint(ipAddress, port);
+        public CSharpWebSocket(IPAddress ipAddress, int port, int backlog, int bufferSize) {
             IPAddress = ipAddress;
             Port = port;
-            BackLog = backLog;
-
-            serverListener = new Listener(IPEndPoint, backLog);
+            Backlog = backlog;
+            IPEndPoint = new IPEndPoint(ipAddress, port);
+            ServerListener = new Listener(IPEndPoint, backlog);
+            ConnectedSockets = new Dictionary<Guid, Client>();
         }
 
         public void Listen() {
-            serverListener.StartServer();
-            RegisterEvents();
-            serverListener.OnSocketConnectEventHandler += OnSocketConnectEventHandler;
-            OnServerStartEventHandler();
+            ServerListener.StartServer();
+            ServerListener.OnSocketConnectEventHandler += OnSocketConnect;
+            OnServerStartEvent();
+        }
+
+        public bool IsServerListening() {
+            return ServerListener.IsListening;
         }
 
 
-        //public Client GetSocket(Guid socketGuid) {
-        //    Sockets.TryGetValue(socketGuid, out new Client)
-        //}
-
-        /*
-         * Event handler to socket connection event       
-         */       
-        private void OnSocketConnectEventHandler(Socket socket) {
-            Client clientConnected = new Client(socket);
-            Sockets.Add(clientConnected.Id, clientConnected);
-            OnClientConnectEventHandler(clientConnected);
-        }
-
-        /*
-         * method used to register custom events
-         */
-        private void RegisterEvents() {
-
+        private void OnSocketConnect(Socket socket) {
+            Client client = new Client(socket);
+            ConnectedSockets.Add(client.Id, client);
+            client.OnClientDisconnectedEventhandler += (Client _client) => OnClientDisconnectionEvent(_client);
+            OnClientConnectionEvent(client);
         }
     }
 }
