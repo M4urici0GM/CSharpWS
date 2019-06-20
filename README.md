@@ -3,6 +3,11 @@ Welcome to my project of using WebSocket to create real-time communication betwe
 *Dependencies:*
  - Newtonsoft.Json
 
+# **WARNING**
+Actually there's no client build yet. For now, in order to use this library, you will need to create your own client to connect
+to this WebSocket server.
+The server also is not sending data to the clients, only receiving, exchanging data will be implemented soon.
+
 # Basic usage:
 
 First, download the release from releases tab, unzip it, and copy both files 
