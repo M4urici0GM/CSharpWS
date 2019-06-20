@@ -1,0 +1,8 @@
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/bin/Debug/CSharpWS2.dll
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/bin/Debug/CSharpWS2.pdb
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/bin/Debug/Newtonsoft.Json.dll
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Debug/CSharpWS2.csprojAssemblyReference.cache
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Debug/CSharpWS2.csproj.CoreCompileInputs.cache
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Debug/CSharpWS2.csproj.CopyComplete
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Debug/CSharpWS2.dll
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Debug/CSharpWS2.pdb

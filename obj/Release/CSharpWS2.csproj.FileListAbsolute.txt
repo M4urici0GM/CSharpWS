@@ -1,0 +1,5 @@
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/bin/Release/CSharpWS2.dll
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/bin/Release/Newtonsoft.Json.dll
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Release/CSharpWS2.csproj.CoreCompileInputs.cache
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Release/CSharpWS2.csproj.CopyComplete
+/home/mauricio/Desktop/Projects/CSharpWS2/CSharpWS2/obj/Release/CSharpWS2.dll
