@@ -1,2 +1,1 @@
-# CSharpWS2
 # CSharpWS
