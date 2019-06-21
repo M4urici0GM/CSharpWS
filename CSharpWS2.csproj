@@ -37,6 +37,7 @@
     <Compile Include="Client.cs" />
     <Compile Include="Listener.cs" />
     <Compile Include="CSharpWebSocket.cs" />
+    <Compile Include="ClienData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dependencies\Newtonsoft.Json.dll" />

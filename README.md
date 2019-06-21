@@ -32,6 +32,7 @@ Events that server triggers:
  - OnServerStartEvent
  - OnClientConnectionEvent
  - OnClientDisconnectionEvent
+ - OnClientDataReceivedEvent
 
 # Events usage:
 You can use a lambda, or a method to handle the event, i`ll be using simple event handlers as shown
@@ -47,6 +48,11 @@ below
 | Backlog           | int        | Current backlog to the connection queue            | public readonly |
 | BufferSize        | int        | Current max bufffer size to the data received      | public readonly |
 
+### Client
+| Prop       | Type       | Description        | Access Level    |
+| ---------- | ---------- | ------------------ | --------------- |
+| IPEndPoint | IPEndPoint | IP from client     | public readonly |
+| Id         | Guid       | Client ID *Unique* | public readonly |
 
 # Events
 ### CSharpWebSocket
@@ -69,14 +75,55 @@ private void OnClientConnectionEventHandler(Client client) {
     Console.WriteLine("A New Client connected: {0}", client.Id);
 }
 ```
+
+#### Client Sent data to the server
+Event Triggered when client send some data to the server, this an nested event, you can use directly from Client class
+```csharp
+using System.Text;
+
+csWebSocket.OnClientDataReceivedEvent += OnClientDataReceivedEventHandler;
+
+private void OnClientDataReceivedEventHandler(Client client, byte[] data) {
+    Console.WriteLine("Data Received from client {0}: {1}", client.Id, Encoding.Default.GetString(data));
+}
+
+
+//////// Or Getting event directly from client
+csWebSocket.OnClientConnectionEvent += OnClientConnectionEventHandler;
+
+private void OnClientConnectionEventHandler(Client client) {
+
+    client.OnDataReceivedEventHandler += OnClientDataReceived;
+}
+
+private void OnClientDataReceived(Client client, byte[] data) {
+    Console.WriteLine("Data Received from client {0}: {1}", client.Id, Encoding.Default.GetString(data));
+}
+
+```
+
 #### Client disconnection event
-Event triggered when a new client disconnects from the server
+Event triggered when a new client disconnects from the server, also a nested event, wich you can can get directly from Client class
 ```csharp
 csWebSocket.OnClientDisconnectionEvent += OnClientDisconnectionEventHandler;
 
 private void OnClientDisconnectionEventHandler(Client client) {
     Console.WriteLine("A Client has disconnected: {0}", client.Id);
 }
+
+//////// Or Getting event directly from client
+
+csWebSocket.OnClientConnectionEvent += OnClientConnectionEventHandler;
+
+private void OnClientConnectionEventHandler(Client client) {
+
+    client.OnClientDisconnectedEvent += OnClientDisconnectionEventHandler;
+}
+
+private void OnClientDisconnectionEventHandler(Client client) {
+    Console.WriteLine("A Client has disconnected: {0}", client.Id);
+}
+
 ```
 
 

@@ -30,7 +30,7 @@ namespace CSharpWS2 {
         private void AcceptCallback(IAsyncResult asyncResult) {
             try {
                 Socket connectedSocket = Socket.EndAccept(asyncResult);
-                OnSocketConnectEventHandler(connectedSocket);
+                OnSocketConnectEventHandler?.Invoke(connectedSocket);
                 Socket.BeginAccept(AcceptCallback, null);
             } catch(Exception ex) {
                 Socket.Close();

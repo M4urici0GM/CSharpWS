@@ -8,11 +8,11 @@ namespace CSharpWS2 {
         public delegate void OnDataReceived(Client client, byte[] data);
         public delegate void OnClientDisconnected(Client client);
 
-        public event OnDataReceived OnDataReceivedEventHandler;
-        public event OnClientDisconnected OnClientDisconnectedEventhandler;
+        public event OnDataReceived OnDataReceivedEvent;
+        public event OnClientDisconnected OnClientDisconnectedEvent;
 
         public IPEndPoint IPEndPoint { get; private set; }
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         private Socket ConnectedSocket { get; set; }
         private byte[] buffer;
@@ -31,18 +31,29 @@ namespace CSharpWS2 {
                 buffer = new byte[8192];
                 int received = socket.Receive(buffer, buffer.Length, 0);
 
-                if (received <= 0)
+                if (received <= 0) {
+                    Console.WriteLine("No Bytes received, disconnecting..");
                     throw new SocketException();
+                }
+
 
                 if (buffer.Length > received)
                     Array.Resize(ref buffer, received);
 
-                OnDataReceivedEventHandler?.Invoke(this, buffer);
+                OnDataReceivedEvent?.Invoke(this, buffer);
 
                 socket.BeginReceive(new byte[] { 0 }, 0, 0, 0, StartReceiveCallback, null);
             } catch {
-                OnClientDisconnectedEventhandler(this);
+                OnClientDisconnectedEvent?.Invoke(this);
                 CloseConnection();
+            }
+        }
+
+        public void SendData(byte[] data) {
+            if (ConnectedSocket.Connected) {
+                ConnectedSocket.Send(data);
+            } else {
+                throw new SocketException();
             }
         }
 
